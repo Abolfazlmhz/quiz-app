@@ -1,14 +1,19 @@
 "use client";
-import { PageData } from "@/app/data/types";
+import { PageData } from "@/app/data/[id]/types";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const QuizTable = ({ data }: { data: PageData }) => {
   const [selected, setSelected] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
+  const router = useRouter();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitted(true);
+  };
+  const handleStartQuiz = () => {
+    localStorage.setItem("quizIdx", (data.id + 1).toString());
+    router.push(`/data/${data.id + 1}`);
   };
 
   return (
@@ -56,15 +61,23 @@ const QuizTable = ({ data }: { data: PageData }) => {
             ثبت پاسخ
           </button>
         ) : (
-          <p className="mt-6 text-lg font-medium">
-            {selected === data.answer ? (
-              <span className="text-green-600">✅ درست پاسخ دادی!</span>
-            ) : (
-              <span className="text-red-600">
-                ❌ اشتباه بود. پاسخ درست: {data.answer}
-              </span>
-            )}
-          </p>
+          <div className="mt-3 flex justify-between items-center text-2xl">
+            <p className="font-medium text-2xl">
+              {selected === data.answer ? (
+                <span className="text-green-600">✅ درست پاسخ دادی!</span>
+              ) : (
+                <span className="text-red-600">
+                  ❌ اشتباه بود. پاسخ درست: {data.answer}
+                </span>
+              )}
+            </p>
+            <button
+              className="text-green-700 cursor-pointer"
+              onClick={handleStartQuiz}
+            >
+              سؤال بعدی
+            </button>
+          </div>
         )}
       </form>
     </div>
