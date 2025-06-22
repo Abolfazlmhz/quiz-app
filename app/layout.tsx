@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="fa-IR" dir="rtl">
       <body
-        className={`${vazir.variable} antialiased flex items-center justify-center h-screen text-center font-bold text-2xl`}
+        className={`${vazir.variable} antialiased flex items-center justify-center h-screen text-center font-bold text-4xl`}
       >
         {children}
       </body>
