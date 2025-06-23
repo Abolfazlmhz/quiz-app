@@ -25,10 +25,16 @@ const page = () => {
       setQuestion(quiz[currentId - 1]);
     } else {
       router.push("/");
+      localStorage.removeItem("quizIdx");
+      localStorage.removeItem("correct");
     }
   }, []);
 
-  return <div>{question && <QuizTable data={question} />}</div>;
+  return (
+    <div>
+      {question && <QuizTable data={question} size={quiz.length} />}
+    </div>
+  );
 };
 
 export default page;
