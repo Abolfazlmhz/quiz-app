@@ -1,4 +1,5 @@
 "use client";
+import { ThemeToggle } from "@/components/theme";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -12,7 +13,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-cyan-200 px-6 py-10">
+    <div className="min-h-screen flex items-center justify-center px-6 py-10">
       <div className="bg-white max-w-xl w-full rounded-3xl shadow-xl p-8 sm:p-10 text-center">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-700 mb-6 leading-snug">
           به آزمون آنلاین خوش اومدی! 👋
@@ -26,6 +27,9 @@ export default function Home() {
         >
           شروع آزمون
         </button>
+      </div>
+      <div className="absolute top-4 left-4">
+        <ThemeToggle />
       </div>
     </div>
   );

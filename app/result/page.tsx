@@ -1,4 +1,5 @@
 "use client";
+import { ThemeToggle } from "@/components/theme";
 import { useSearchParams, useRouter } from "next/navigation";
 
 const Result = () => {
@@ -17,7 +18,7 @@ const Result = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-400 to-blue-700 px-4">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white rounded-3xl p-10 max-w-lg w-full shadow-2xl text-center">
         <h1 className="text-4xl font-extrabold text-gray-800 mb-6">
           🎉 آزمون تمام شد!
@@ -46,6 +47,9 @@ const Result = () => {
         >
           شروع مجدد آزمون
         </button>
+      </div>
+      <div className="absolute top-4 left-4">
+        <ThemeToggle />
       </div>
     </div>
   );

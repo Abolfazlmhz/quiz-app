@@ -1,5 +1,6 @@
 "use client";
 import { PageData } from "@/app/data/[id]/types";
+import { ThemeToggle } from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -37,7 +38,7 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-cyan-200 px-4 py-6 overflow-hidden sm:overflow-auto">
+    <div className="min-h-screen flex items-center justify-center px-4 py-6 overflow-hidden sm:overflow-auto">
       <div className="w-full max-w-xl bg-white rounded-3xl shadow-xl p-4 sm:p-6 md:p-8 text-[14px] sm:text-base">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800 mb-4 sm:mb-6 text-center leading-snug">
           {data.question}
@@ -103,6 +104,9 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
             </div>
           )}
         </form>
+      </div>
+      <div className="absolute top-4 left-4">
+        <ThemeToggle />
       </div>
     </div>
   );

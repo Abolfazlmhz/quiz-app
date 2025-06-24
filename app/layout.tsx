@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./provider";
 
 const vazir = Vazirmatn({
   variable: "--font-vazir",
@@ -20,11 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa-IR" dir="rtl">
+    <html lang="fa-IR" dir="rtl" suppressHydrationWarning>
       <body
         className={`${vazir.variable} antialiased h-screen text-center font-bold text-4xl`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
