@@ -10,14 +10,18 @@
   --bg: linear-gradient(to right, #dbeafe, #a2f4fd);
   --fg: #332f2f;
 }
+
+[data-theme="blue"] {
+  --bg: blue;
+  --fg: white;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
-
-
 
 body {
   background: var(--bg);

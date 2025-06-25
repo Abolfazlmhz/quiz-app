@@ -19,7 +19,7 @@ const Result = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white rounded-3xl p-10 max-w-lg w-full shadow-2xl text-center">
+      <div style={{background: var}} className="bg-white rounded-3xl p-10 max-w-lg w-full shadow-2xl text-center">
         <h1 className="text-4xl font-extrabold text-gray-800 mb-6">
           🎉 آزمون تمام شد!
         </h1>

@@ -7,7 +7,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       attribute="data-theme"
       defaultTheme="light"
       enableSystem
-      // themes={["light", "dark", "blue", "pink"]} // Add your themes here
+      themes={["light", "dark", "blue"]} // Add your themes here
     >
       {children}
     </ThemeProvider>
