@@ -1,8 +1,10 @@
 "use client";
 import { ThemeToggle } from "@/components/theme";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
+  const t = useTranslations("HomePage");
   const router = useRouter();
 
   const handleStartQuiz = () => {
@@ -16,7 +18,7 @@ export default function Home() {
     <div className="min-h-screen flex items-center justify-center px-6 py-10">
       <div className="bg-white max-w-xl w-full rounded-3xl shadow-xl p-8 sm:p-10 text-center">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-700 mb-6 leading-snug">
-          به آزمون آنلاین خوش اومدی! 👋
+          {t("title")}! 👋
         </h1>
         <p className="text-gray-700 text-base sm:text-lg mb-8">
           برای شروع آزمون دکمه زیر را بزن و خودتو به چالش بکش!

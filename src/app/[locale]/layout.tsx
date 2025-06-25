@@ -1,0 +1,49 @@
+import type { Metadata } from "next";
+import { Vazirmatn } from "next/font/google";
+import { Providers } from "./provider";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
+import "./globals.css";
+
+const vazir = Vazirmatn({
+  variable: "--font-vazir",
+  display: "swap",
+  subsets: ["arabic"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+export const metadata: Metadata = {
+  title: "کوییز",
+  description: "آزمونکی کوتاه",
+};
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  // Ensure that the incoming `locale` is valid
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  return (
+    <html
+      lang={locale}
+      dir={locale === "fa" ? "rtl" : "ltr"}
+      suppressHydrationWarning
+    >
+      <body
+        className={`${vazir.variable} antialiased h-screen text-center font-bold text-4xl`}
+      >
+        <NextIntlClientProvider>
+          <Providers>{children}</Providers>
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}

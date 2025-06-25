@@ -1,5 +1,5 @@
 "use client";
-import { PageData } from "@/app/data/[id]/types";
+import { PageData } from "@/src/app/[locale]/data/[id]/types";
 import { ThemeToggle } from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
