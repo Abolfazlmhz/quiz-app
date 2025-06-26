@@ -1,6 +1,7 @@
 "use client";
 import { ThemeToggle } from "@/components/theme";
 import { useSearchParams, useRouter } from "next/navigation";
+import LanguageSwitcher from "@/components/data/languageSwitcher";
 
 const Result = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const Result = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div style={{background: var}} className="bg-white rounded-3xl p-10 max-w-lg w-full shadow-2xl text-center">
+      <div className="bg-white rounded-3xl p-10 max-w-lg w-full shadow-2xl text-center">
         <h1 className="text-4xl font-extrabold text-gray-800 mb-6">
           🎉 آزمون تمام شد!
         </h1>
@@ -48,9 +49,8 @@ const Result = () => {
           شروع مجدد آزمون
         </button>
       </div>
-      <div className="absolute top-4 left-4">
-        <ThemeToggle />
-      </div>
+      <LanguageSwitcher />
+      <ThemeToggle />
     </div>
   );
 };

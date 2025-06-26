@@ -1,6 +1,7 @@
 {
   "HomePage": {
     "title": "به آزمون آنلاین خوش اومدی",
-    "about": "Go to the about page"
+    "about": "برای شروع آزمون دکمه زیر را بزن و خودتو به چالش بکش!",
+    "startButton": "شروع آزمون"
   }
 }

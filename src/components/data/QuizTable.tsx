@@ -3,6 +3,7 @@ import { PageData } from "@/src/app/[locale]/data/[id]/types";
 import { ThemeToggle } from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import LanguageSwitcher from "./languageSwitcher";
 
 const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
   const [selected, setSelected] = useState<string | null>(null);
@@ -80,7 +81,7 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
             <button
               type="submit"
               disabled={!selected}
-              className="mt-6 sm:mt-8 w-full py-2 sm:py-3 bg-blue-600 text-white text-lg sm:text-xl font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition"
+              className="mt-6 sm:mt-8 w-full py-2 sm:py-3 bg-blue-600 text-white text-lg sm:text-xl font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition cursor-pointer"
             >
               ثبت پاسخ
             </button>
@@ -97,7 +98,7 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
               </p>
               <button
                 onClick={goToNext}
-                className="text-blue-700 hover:text-blue-900 font-bold"
+                className="text-blue-700 hover:text-blue-900 font-bold cursor-pointer"
               >
                 {data.id === size ? "مشاهده نتیجه" : "سؤال بعدی"}
               </button>
@@ -105,9 +106,8 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
           )}
         </form>
       </div>
-      <div className="absolute top-4 left-4">
-        <ThemeToggle />
-      </div>
+      <LanguageSwitcher />
+      <ThemeToggle />
     </div>
   );
 };
