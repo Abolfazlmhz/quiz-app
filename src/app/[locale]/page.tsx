@@ -1,5 +1,6 @@
 "use client";
-import { ThemeToggle } from "@/components/theme";
+
+import ThemeToggle from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "@/components/data/languageSwitcher";
@@ -13,7 +14,7 @@ export default function Home() {
     localStorage.removeItem("answered");
     router.push("/data/1");
   };
-  console.log("page render");
+
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-10">
       <div className="bg-white max-w-xl w-full rounded-3xl shadow-xl p-8 sm:p-10 text-center">

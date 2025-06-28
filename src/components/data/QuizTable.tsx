@@ -1,6 +1,6 @@
 "use client";
 import { PageData } from "@/src/app/[locale]/data/[id]/types";
-import { ThemeToggle } from "@/components/theme";
+import ThemeToggle from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LanguageSwitcher from "./languageSwitcher";
@@ -46,7 +46,7 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="space-y-3 sm:space-y-4">
-            {data.options.map((opt, index) => (
+            {data.options.map((opt: string, index: number) => (
               <label
                 key={index}
                 className={`flex items-center p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition text-base sm:text-lg font-semibold

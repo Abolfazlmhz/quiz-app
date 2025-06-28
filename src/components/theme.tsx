@@ -1,14 +1,36 @@
 "use client";
 import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 
-export function ThemeToggle() {
+function areEqual(prevProps: unknown, nextProps: unknown) {
+  console.log(prevProps, nextProps);
+  return true;
+}
+
+function ThemeToggle() {
   const { setTheme, theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
+  function handleClick() {
+    setOpen(false);
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      setOpen(false);
+    }
+  }
+
+  useEffect(() => {
+    if (open) {
+      document.addEventListener("click", handleClick);
+      document.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
 
   const themes = [
     { id: "light", label: "Light", icon: "🌞" },
@@ -52,3 +74,5 @@ export function ThemeToggle() {
     </div>
   );
 }
+
+export default memo(ThemeToggle, areEqual);

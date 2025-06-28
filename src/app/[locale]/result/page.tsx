@@ -1,5 +1,5 @@
 "use client";
-import { ThemeToggle } from "@/components/theme";
+import ThemeToggle from "@/components/theme";
 import { useSearchParams, useRouter } from "next/navigation";
 import LanguageSwitcher from "@/components/data/languageSwitcher";
 
