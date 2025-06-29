@@ -4,10 +4,18 @@ import ThemeToggle from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "@/components/data/languageSwitcher";
+import { useSelector } from "react-redux";
+// import { login, logout } from "@/store/userSlice";
+import type { RootState } from "@/store/index";
 
 export default function Home() {
   const t = useTranslations("HomePage");
   const router = useRouter();
+  // const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
+
+  console.log(user);
+
   const handleStartQuiz = () => {
     localStorage.setItem("quizIdx", "1");
     localStorage.setItem("correct", "0");

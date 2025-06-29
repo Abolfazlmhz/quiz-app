@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
-import { Providers } from "./provider";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
+import AppProviders from "./appprovider";
 import { routing } from "@/i18n/routing";
 import "./globals.css";
 
@@ -27,10 +27,10 @@ export default async function LocaleLayout({
 }) {
   // Ensure that the incoming `locale` is valid
   const { locale } = await params;
+
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
-
   return (
     <html
       lang={locale}
@@ -41,7 +41,7 @@ export default async function LocaleLayout({
         className={`${vazir.variable} antialiased h-screen text-center font-bold text-4xl`}
       >
         <NextIntlClientProvider>
-          <Providers>{children}</Providers>
+          <AppProviders>{children}</AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>
