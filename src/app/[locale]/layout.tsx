@@ -1,10 +1,13 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import AppProviders from "./appprovider";
 import { routing } from "@/i18n/routing";
-import "./globals.css";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import SessionSync from "@/components/SessionSync";
 
 const vazir = Vazirmatn({
   variable: "--font-vazir",
@@ -25,8 +28,8 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  // Ensure that the incoming `locale` is valid
   const { locale } = await params;
+  const session = await getServerSession(authOptions);
 
   if (!hasLocale(routing.locales, locale)) {
     notFound();
@@ -41,7 +44,10 @@ export default async function LocaleLayout({
         className={`${vazir.variable} antialiased h-screen text-center font-bold text-4xl`}
       >
         <NextIntlClientProvider>
-          <AppProviders>{children}</AppProviders>
+          <AppProviders session={session}>
+            <SessionSync />
+            {children}
+          </AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>

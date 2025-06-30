@@ -3,5 +3,13 @@
     "title": "Hello world!",
     "about": "Click the button below to start the quiz",
     "startButton": "Start Quiz"
+  },
+  "SignInPage": {
+    "title": "Welcome Back",
+    "subtitle": "Log in to continue",
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "loginWithGithub": "Login with GitHub"
   }
 }   
