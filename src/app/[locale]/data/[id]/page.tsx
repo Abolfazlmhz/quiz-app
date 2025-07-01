@@ -31,9 +31,7 @@ const page = () => {
   }, []);
 
   return (
-    <div>
-      {question && <QuizTable data={question} size={quiz.length} />}
-    </div>
+    <div>{question && <QuizTable data={question} size={quiz.length} />}</div>
   );
 };
 

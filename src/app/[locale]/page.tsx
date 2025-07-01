@@ -4,23 +4,22 @@ import ThemeToggle from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "@/components/data/languageSwitcher";
-import { useSelector } from "react-redux";
-// import { login, logout } from "@/store/userSlice";
-import type { RootState } from "@/store/index";
+import SignInButton from "./sign-in/sign-in-button";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const t = useTranslations("HomePage");
   const router = useRouter();
-  // const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user);
-
-  console.log(user);
-
+  const { status } = useSession();
   const handleStartQuiz = () => {
-    localStorage.setItem("quizIdx", "1");
-    localStorage.setItem("correct", "0");
-    localStorage.removeItem("answered");
-    router.push("/data/1");
+    if (status === "unauthenticated") {
+      router.push("/sign-in");
+    } else {
+      localStorage.setItem("quizIdx", "1");
+      localStorage.setItem("correct", "0");
+      localStorage.removeItem("answered");
+      router.push("/data/1");
+    }
   };
 
   return (
@@ -37,6 +36,7 @@ export default function Home() {
           {t("startButton")}
         </button>
       </div>
+      <SignInButton />
       <LanguageSwitcher />
       <ThemeToggle />
     </div>

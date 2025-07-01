@@ -10,6 +10,20 @@
     "username": "Username",
     "password": "Password",
     "login": "Login",
-    "loginWithGithub": "Login with GitHub"
+    "loginWithGithub": "Login with GitHub",
+    "invalidCredentials": "Invalid credentials"
+  },
+  "ResultPage": {
+    "title": "Quiz Result",
+    "subtitle": "Your quiz result is as follows:",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "percent": "Percentage",
+    "percentValue": "Percentage",
+    "startAgain": "Start Again"
+  },
+  "sign-in-button": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out"
   }
 }   

@@ -10,6 +10,20 @@
     "username": "نام کاربری",
     "password": "رمز عبور",
     "login": "ورود",
-    "loginWithGithub": "ورود با گیت‌هاب"
+    "loginWithGithub": "ورود با گیت‌هاب",
+    "invalidCredentials": "نام کاربری یا رمز عبور اشتباه است"
+  },
+  "ResultPage": {
+    "title": "نتیجه آزمون",
+    "subtitle": "نتیجه آزمون شما به شرح زیر است:",
+    "correct": "درست",
+    "incorrect": "غلط",
+    "percent": "درصد موفقیت",
+    "percentValue": "درصد موفقیت",
+    "startAgain": "شروع مجدد آزمون"
+  },
+  "sign-in-button": {
+    "signIn": "ورود",
+    "signOut": "خروج"
   }
 }                                                   

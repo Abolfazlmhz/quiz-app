@@ -7,7 +7,6 @@ import AppProviders from "./appprovider";
 import { routing } from "@/i18n/routing";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import SessionSync from "@/components/SessionSync";
 
 const vazir = Vazirmatn({
   variable: "--font-vazir",
@@ -44,10 +43,7 @@ export default async function LocaleLayout({
         className={`${vazir.variable} antialiased h-screen text-center font-bold text-4xl`}
       >
         <NextIntlClientProvider>
-          <AppProviders session={session}>
-            <SessionSync />
-            {children}
-          </AppProviders>
+          <AppProviders session={session}>{children}</AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>

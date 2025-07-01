@@ -30,8 +30,7 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
     const isLastQuestion = data.id === size;
 
     if (isLastQuestion) {
-      const correct = localStorage.getItem("correct") || "0";
-      router.push(`/result?correct=${correct}&size=${size}`);
+      router.push("/result");
     } else {
       localStorage.setItem("quizIdx", nextId.toString());
       router.push(`/data/${nextId}`);
@@ -70,7 +69,7 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
                   disabled={isSubmitted}
                   checked={selected === opt}
                   onChange={() => setSelected(opt)}
-                  className="form-radio accent-blue-600 ml-4 scale-110"
+                  className="form-radio accent-blue-600 ml-4 mr-4 scale-110"
                 />
                 {opt}
               </label>
