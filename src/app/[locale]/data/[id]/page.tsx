@@ -3,9 +3,15 @@ import quiz from "./quiz";
 import QuizTable from "@/components/data/QuizTable";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { PageData } from "./types";
 
-const page = () => {
+export interface PageData {
+  id: number;
+  question: string;
+  options: string[];
+  answer: string;
+}
+
+const Page = () => {
   const router = useRouter();
   const { id } = useParams();
   const [question, setQuestion] = useState<PageData | null>(null);
@@ -35,4 +41,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

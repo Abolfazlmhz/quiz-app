@@ -1,9 +1,15 @@
 "use client";
-import { PageData } from "@/src/app/[locale]/data/[id]/types";
 import ThemeToggle from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LanguageSwitcher from "./languageSwitcher";
+
+export interface PageData {
+  id: number;
+  question: string;
+  options: string[];
+  answer: string;
+}
 
 const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
   const [selected, setSelected] = useState<string | null>(null);
