@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import AppProviders from "./appprovider";
 import { routing } from "@/i18n/routing";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/components/auth/authOptions";
 
 const vazir = Vazirmatn({
   variable: "--font-vazir",
