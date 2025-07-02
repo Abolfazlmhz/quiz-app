@@ -1,4 +1,9 @@
-import { PageData } from "./types";
+export interface PageData {
+  id: number;
+  question: string;
+  options: string[];
+  answer: string;
+}
 
 const quizData: Array<PageData> = [
   {
