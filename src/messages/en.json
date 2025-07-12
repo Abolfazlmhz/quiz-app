@@ -20,10 +20,19 @@
     "incorrect": "Incorrect",
     "percent": "Percentage",
     "percentValue": "Percentage",
-    "startAgain": "Start Again"
+    "startAgain": "Start Again",
+    "successMessage": "Great job! 🎉",
+    "failMessage": "You can do better! Try again 💪"
   },
   "sign-in-button": {
     "signIn": "Sign In",
     "signOut": "Sign Out"
+  },
+  "SelectQuizPage": {
+    "title": "Select Quiz Type",
+    "compQuiz": "Computer Quiz",
+    "mathQuiz": "Math Quiz",
+    "phyzQuiz": "Physics Quiz",
+    "engQuiz": "English Quiz"
   }
-}   
+}

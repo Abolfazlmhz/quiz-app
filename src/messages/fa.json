@@ -20,10 +20,19 @@
     "incorrect": "غلط",
     "percent": "درصد موفقیت",
     "percentValue": "درصد موفقیت",
-    "startAgain": "شروع مجدد آزمون"
+    "startAgain": "شروع مجدد آزمون",
+    "successMessage": "عالی بود! تبریک می‌گم 🎉",
+    "failMessage": "می‌تونی بهتر از این باشی! دوباره تلاش کن 💪"
   },
   "sign-in-button": {
     "signIn": "ورود",
     "signOut": "خروج"
+  },
+  "SelectQuizPage": {
+    "title": "نوع آزمون را انتخاب کنید",
+    "compQuiz": "آزمون کامپیوتر",
+    "mathQuiz": "آزمون ریاضی",
+    "phyzQuiz": "آزمون فیزیک",
+    "engQuiz": "آزمون زبان"
   }
 }                                                   

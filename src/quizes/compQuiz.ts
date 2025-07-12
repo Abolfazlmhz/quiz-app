@@ -1,11 +1,11 @@
-export interface PageData {
+interface PageData {
   id: number;
   question: string;
   options: string[];
   answer: string;
 }
 
-const quizData: Array<PageData> = [
+const compQuiz: PageData[] = [
   {
     id: 1,
     question: "کدام یک زبان برنامه‌نویسی front-end محسوب می‌شود؟",
@@ -74,4 +74,4 @@ const quizData: Array<PageData> = [
   },
 ];
 
-export default quizData;
+export default compQuiz;

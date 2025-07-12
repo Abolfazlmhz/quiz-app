@@ -15,10 +15,7 @@ export default function Home() {
     if (status === "unauthenticated") {
       router.push("/sign-in");
     } else {
-      localStorage.setItem("quizIdx", "1");
-      localStorage.setItem("correct", "0");
-      localStorage.removeItem("answered");
-      router.push("/data/1");
+      router.push("/select-quiz");
     }
   };
 

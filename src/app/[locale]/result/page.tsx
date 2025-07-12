@@ -1,92 +1,102 @@
 "use client";
-
 import ThemeToggle from "@/components/theme";
 import LanguageSwitcher from "@/components/data/languageSwitcher";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SignInButton from "../sign-in/sign-in-button";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-
-const TOTAL_QUESTIONS = 10;
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/store";
+import { resetQuiz } from "@/store/quizSlice";
+import { useEffect, useState } from "react";
 
 const Result = () => {
   const router = useRouter();
-  const [correct, setCorrect] = useState<number | null>(null);
   const { status } = useSession();
   const t = useTranslations("ResultPage");
+  const correct = useSelector((state: RootState) => state.quiz.correct) || 0;
+  const answered = useSelector((state: RootState) => state.quiz.answered) || [];
+  const TOTAL_QUESTIONS =
+    useSelector((state: RootState) => state.quiz.size) || 0;
+  const dispatch = useDispatch();
+
+  const incorrect = TOTAL_QUESTIONS - correct || 0;
+  const percent = Math.round((correct / TOTAL_QUESTIONS) * 100) || 0;
+  const [isValid, setIsValid] = useState(true);
+
   useEffect(() => {
-    const correctLS = localStorage.getItem("correct");
-    const answeredLS = localStorage.getItem("answered");
-
-    const correctNum = parseInt(correctLS || "0", 10);
-    const answered = answeredLS ? JSON.parse(answeredLS) : [];
-
-    if (
-      !correctLS ||
-      !answeredLS ||
-      isNaN(correctNum) ||
-      !Array.isArray(answered) ||
-      answered.length !== TOTAL_QUESTIONS ||
-      status === "unauthenticated"
-    ) {
+    if (answered.length !== TOTAL_QUESTIONS || status === "unauthenticated") {
+      setIsValid(false);
       router.push("/");
-      return;
     }
-
-    setCorrect(correctNum);
-  }, []);
+  }, [answered.length, TOTAL_QUESTIONS, status]);
 
   const handleTryAgain = () => {
-    localStorage.removeItem("quizIdx");
-    localStorage.removeItem("correct");
-    localStorage.removeItem("answered");
+    dispatch(resetQuiz());
     router.push("/");
   };
 
-  if (correct === null) return null;
-
-  const incorrect = TOTAL_QUESTIONS - correct;
-  const percent = Math.round((correct / TOTAL_QUESTIONS) * 100);
+  if (!isValid) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="relative bg-white rounded-3xl p-8 sm:p-10 max-w-xl w-full shadow-2xl text-center">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-700 mb-4">
+    <div className="min-h-screen flex items-center justify-center px-4 py-4">
+      <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 max-w-lg w-full text-center">
+        <h1 className="text-4xl font-extrabold text-blue-700 mb-2">
           {t("title")}
         </h1>
-        <p className="text-gray-600 text-sm sm:text-base mb-6">
-          {t("subtitle")}
+        <p className="text-gray-600 mb-6">{t("subtitle")}</p>
+
+        <p
+          className={`text-xl font-bold mb-4 ${
+            percent >= 70 ? "text-green-600" : "text-red-500"
+          }`}
+        >
+          {percent >= 70 ? t("successMessage") : t("failMessage")}
         </p>
 
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 text-base sm:text-lg font-medium text-gray-800 mb-6">
-          <div className="bg-green-100 rounded-xl py-3">
-            {t("correct")}: {correct}
-          </div>
-          <div className="bg-red-100 rounded-xl py-3">
-            {t("incorrect")}: {incorrect}
+        <div className="relative w-32 h-32 mx-auto mb-6">
+          <svg className="transform -rotate-90" viewBox="0 0 100 100">
+            <circle
+              cx="50"
+              cy="50"
+              r="45"
+              stroke="#e5e7eb"
+              strokeWidth="10"
+              fill="none"
+            />
+            <circle
+              cx="50"
+              cy="50"
+              r="45"
+              stroke="#2563eb"
+              strokeWidth="10"
+              strokeDasharray="282.6"
+              strokeDashoffset={282.6 - (282.6 * percent) / 100}
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center text-blue-700 text-2xl font-extrabold">
+            {percent}%
           </div>
         </div>
 
-        <div className="w-full bg-gray-200 rounded-full h-4 mb-6">
-          <div
-            className="bg-blue-600 h-4 rounded-full transition-all"
-            style={{ width: `${percent}%` }}
-          />
+        <div className="flex gap-3 text-lg font-medium text-gray-700 mb-6">
+          <div className="bg-green-100 px-4 py-2 rounded-xl w-1/2">
+            ✅ {t("correct")}: {correct}
+          </div>
+          <div className="bg-red-100 px-4 py-2 rounded-xl w-1/2">
+            ❌ {t("incorrect")}: {incorrect}
+          </div>
         </div>
-
-        <p className="text-lg sm:text-xl font-semibold text-blue-800 mb-6">
-          {t("percent")}: {t("percentValue")} %{percent}
-        </p>
 
         <button
           onClick={handleTryAgain}
-          className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 font-medium text-sm sm:text-base transition"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg font-semibold transition cursor-pointer"
         >
           {t("startAgain")}
         </button>
       </div>
-      <SignInButton />
       <LanguageSwitcher />
       <ThemeToggle />
     </div>

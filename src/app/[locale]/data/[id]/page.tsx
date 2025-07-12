@@ -1,10 +1,17 @@
 "use client";
-import quiz from "./quiz";
+
 import QuizTable from "@/components/data/QuizTable";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import compQuiz from "@/quizes/compQuiz";
+import mathQuiz from "@/quizes/mathQuiz";
+import phyzQuiz from "@/quizes/phyzQuiz";
+import engQuiz from "@/quizes/engQuiz";
+import { resetQuiz, setSize } from "@/store/quizSlice";
 
-export interface PageData {
+interface PageData {
   id: number;
   question: string;
   options: string[];
@@ -14,27 +21,42 @@ export interface PageData {
 const Page = () => {
   const router = useRouter();
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const quizType = useSelector((state: RootState) => state.quiz.type);
+  const quizIdx = useSelector((state: RootState) => state.quiz.quizIdx);
   const [question, setQuestion] = useState<PageData | null>(null);
 
+  const quiz =
+    quizType === "compQuiz"
+      ? compQuiz
+      : quizType === "mathQuiz"
+      ? mathQuiz
+      : quizType === "phyzQuiz"
+      ? phyzQuiz
+      : engQuiz;
+
   useEffect(() => {
-    const currentId = parseInt(id as string);
-    const quizIdx = parseInt(localStorage.getItem("quizIdx") || "-1");
-
-    const isValidIndex =
-      !isNaN(currentId) &&
-      !isNaN(quizIdx) &&
-      currentId === quizIdx &&
-      currentId >= 1 &&
-      currentId <= quiz.length;
-
-    if (isValidIndex) {
-      setQuestion(quiz[currentId - 1]);
-    } else {
+    if (!quizType || !id) {
       router.push("/");
-      localStorage.removeItem("quizIdx");
-      localStorage.removeItem("correct");
+      return;
     }
-  }, []);
+
+    dispatch(setSize(quiz.length));
+
+    const currentId = parseInt(id as string);
+    if (
+      isNaN(currentId) ||
+      currentId !== quizIdx ||
+      currentId < 1 ||
+      currentId > quiz.length
+    ) {
+      dispatch(resetQuiz());
+      router.push("/");
+      return;
+    }
+
+    setQuestion(quiz[currentId - 1]);
+  }, [id, quizType]);
 
   return (
     <div>{question && <QuizTable data={question} size={quiz.length} />}</div>

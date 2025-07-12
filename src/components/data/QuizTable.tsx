@@ -1,10 +1,13 @@
 "use client";
-import ThemeToggle from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setQuizIdx, incrementCorrect, addAnswered } from "@/store/quizSlice";
+import { RootState } from "@/store";
+import ThemeToggle from "@/components/theme";
 import LanguageSwitcher from "./languageSwitcher";
 
-export interface PageData {
+interface PageData {
   id: number;
   question: string;
   options: string[];
@@ -15,30 +18,26 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
   const [selected, setSelected] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
+  const answered = useSelector((state: RootState) => state.quiz.answered);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const answered: number[] = JSON.parse(
-      localStorage.getItem("answered") || "[]"
-    );
     if (!answered.includes(data.id)) {
       if (selected === data.answer) {
-        const prev = parseInt(localStorage.getItem("correct") || "0", 10);
-        localStorage.setItem("correct", (prev + 1).toString());
+        dispatch(incrementCorrect());
       }
-      localStorage.setItem("answered", JSON.stringify([...answered, data.id]));
+      dispatch(addAnswered(data.id));
     }
     setIsSubmitted(true);
   };
 
   const goToNext = () => {
     const nextId = data.id + 1;
-    const isLastQuestion = data.id === size;
-
-    if (isLastQuestion) {
+    if (nextId > size) {
       router.push("/result");
     } else {
-      localStorage.setItem("quizIdx", nextId.toString());
+      dispatch(setQuizIdx(nextId));
       router.push(`/data/${nextId}`);
     }
   };
