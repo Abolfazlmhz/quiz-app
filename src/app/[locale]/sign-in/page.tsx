@@ -1,32 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import ThemeToggle from "@/components/theme";
-import LanguageSwitcher from "@/components/data/languageSwitcher";
+import dynamic from "next/dynamic";
+const ThemeToggle = dynamic(() => import("@/components/theme"), { ssr: false });
+const LanguageSwitcher = dynamic(
+  () => import("@/components/data/languageSwitcher"),
+  { ssr: false }
+);
 import { useTranslations } from "next-intl";
 
-export default function SignInPage() {
+function SignInPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const t = useTranslations("SignInPage");
 
-  const handleLogin = async () => {
-    setError(""); // reset error
+  const handleLogin = useCallback(async () => {
+    setError("");
+    setLoading(true);
     const res = await signIn("credentials", {
       username,
       password,
       redirect: false,
     });
+    setLoading(false);
     if (!res?.error) {
       router.push("/");
     } else {
       setError(t("invalidCredentials"));
     }
-  };
+  }, [username, password, router, t]);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      handleLogin();
+    },
+    [handleLogin]
+  );
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
@@ -41,7 +56,10 @@ export default function SignInPage() {
           {t("subtitle")}
         </p>
 
-        <div className="space-y-4 text-sm sm:text-base">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 text-sm sm:text-base"
+        >
           <input
             type="text"
             value={username}
@@ -62,13 +80,17 @@ export default function SignInPage() {
           )}
 
           <button
-            onClick={handleLogin}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition shadow-sm cursor-pointer"
+            type="submit"
+            disabled={loading}
+            className={`w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition shadow-sm cursor-pointer ${
+              loading ? "opacity-50" : ""
+            }`}
           >
-            {t("login")}
+            {loading ? t("wait") : t("login")}
           </button>
 
           <button
+            type="button"
             onClick={() => signIn("github")}
             className="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 transition flex items-center justify-center gap-2 cursor-pointer"
           >
@@ -77,8 +99,10 @@ export default function SignInPage() {
             </svg>
             {t("loginWithGithub")}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
 }
+
+export default memo(SignInPage);

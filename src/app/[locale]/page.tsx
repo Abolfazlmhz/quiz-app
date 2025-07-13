@@ -1,22 +1,33 @@
 "use client";
-import ThemeToggle from "@/components/theme";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import LanguageSwitcher from "@/components/data/languageSwitcher";
-import SignInButton from "./sign-in/sign-in-button";
+import dynamic from "next/dynamic";
+const SignInButton = dynamic(() => import("./sign-in/sign-in-button"), {
+  ssr: false,
+});
+const ThemeToggle = dynamic(() => import("@/components/theme"), { ssr: false });
+const LanguageSwitcher = dynamic(
+  () => import("@/components/data/languageSwitcher"),
+  { ssr: false }
+);
 import { useSession } from "next-auth/react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const t = useTranslations("HomePage");
   const router = useRouter();
   const { status } = useSession();
-  const handleStartQuiz = () => {
+  const handleStartQuiz = useCallback(() => {
     if (status === "unauthenticated") {
       router.push("/sign-in");
     } else {
       router.push("/select-quiz");
     }
-  };
+  }, [status, router]);
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 py-10">
@@ -25,24 +36,29 @@ export default function Home() {
 
       <div className="z-10 bg-white/80 max-w-xl w-full rounded-3xl shadow-xl p-12 text-center">
         <h1
-          className="
-            text-5xl font-extrabold mb-5 pt-3
-            bg-gradient-to-r from-cyan-300 via-cyan-600 to-blue-700
-            bg-clip-text text-transparent animate-fade-in leading-14 flex items-center justify-center gap-3
-          "
+          className={`text-5xl font-extrabold mb-5 pt-3 
+    bg-gradient-to-r from-cyan-300 via-cyan-600 to-blue-700 
+    bg-clip-text text-transparent leading-14 flex items-center justify-center gap-3
+    ${mounted ? "animate-fade-in" : ""}
+  `}
         >
           {t("title")}!
         </h1>
-        <p className="text-gray-700 text-base sm:text-lg mb-8 animate-fade-in animation-delay-500">
+
+        <p
+          className={`text-gray-700 text-base sm:text-lg mb-8 
+    ${mounted ? "animate-fade-in animation-delay-500" : ""}
+  `}
+        >
           {t("about")}
         </p>
+
         <button
           onClick={handleStartQuiz}
-          className="
-            px-8 py-3 text-white bg-blue-600 hover:bg-purple-700
-            transition font-semibold rounded-full text-lg sm:text-xl
-            shadow-md cursor-pointer animate-fade-in animation-delay-1000
-          "
+          className={`px-8 py-3 text-white bg-blue-600 hover:bg-purple-700
+    transition font-semibold rounded-full text-lg sm:text-xl shadow-md cursor-pointer
+    ${mounted ? "animate-fade-in animation-delay-1000" : ""}
+  `}
         >
           {t("startButton")}
         </button>
