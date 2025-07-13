@@ -18,7 +18,7 @@ const SignInButton = () => {
   };
 
   return (
-    <div className="absolute top-4 ">
+    <div className="fixed bottom-4 right-4">
       <button
         onClick={handleSignIn}
         className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base shadow-sm transition-all cursor-pointer"

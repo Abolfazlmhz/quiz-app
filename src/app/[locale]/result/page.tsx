@@ -39,8 +39,8 @@ const Result = () => {
   if (!isValid) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-4">
-      <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 max-w-lg w-full text-center">
+    <div className=" min-h-screen flex items-center justify-center px-4 py-4">
+      <div className="bg-white/85 rounded-3xl shadow-2xl p-6 max-w-lg w-full text-center">
         <h1 className="text-4xl font-extrabold text-blue-700 mb-2">
           {t("title")}
         </h1>
@@ -99,6 +99,7 @@ const Result = () => {
       </div>
       <LanguageSwitcher />
       <ThemeToggle />
+      <SignInButton />
     </div>
   );
 };

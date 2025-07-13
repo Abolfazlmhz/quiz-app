@@ -8,7 +8,7 @@ export default function LanguageSwitcher() {
   const locale = useLocale();
 
   return (
-    <div className="absolute top-4 right-4">
+    <div className="fixed top-4 right-4">
       <button
         className="cursor-pointer"
         onClick={() => {

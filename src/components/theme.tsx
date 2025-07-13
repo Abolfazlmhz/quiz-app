@@ -46,7 +46,7 @@ function ThemeToggle() {
   if (!mounted) return null;
 
   return (
-    <div className="absolute top-4 left-4">
+    <div className="fixed top-4 left-4">
       <div className="relative inline-block text-left">
         <button
           onClick={() => setOpen(!open)}

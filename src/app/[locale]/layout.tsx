@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import AppProviders from "./appprovider";
+import AppProviders from "./appProvider";
 import { routing } from "@/i18n/routing";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/components/auth/authOptions";
