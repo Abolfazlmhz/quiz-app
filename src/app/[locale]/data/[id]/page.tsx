@@ -1,10 +1,13 @@
 "use client";
 import { useEffect, useState, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { resetQuiz, setQuizIdx, setSize } from "@/store/quizSlice";
-
+import { setQuizIdx, setSize } from "@/store/quizSlice";
+// const Spinner = dynamic(() => import("@/components/data/Spinner"), {
+//   ssr: false,
+// });
+import SkeletonQuestion from "./Loading";
 import QuizTable from "@/components/data/QuizTable";
 import compQuiz from "@/quizes/compQuiz";
 import mathQuiz from "@/quizes/mathQuiz";
@@ -57,9 +60,7 @@ const Page = () => {
       currentId < 1 ||
       currentId > quiz.length
     ) {
-      dispatch(resetQuiz());
-      router.push("/");
-      return;
+      notFound();
     }
 
     if (answered.includes(currentId)) {
@@ -80,7 +81,7 @@ const Page = () => {
   }, [id, quizType, quiz, quizIdx, dispatch, router, answered, isStateReady]);
 
   if (!isStateReady || !question) {
-    return <div className="text-center p-10">در حال بارگذاری...</div>;
+    return <SkeletonQuestion />;
   }
 
   return <QuizTable data={question} size={quiz.length} />;
