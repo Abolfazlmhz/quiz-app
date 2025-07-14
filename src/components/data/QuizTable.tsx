@@ -1,12 +1,28 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuizIdx, incrementCorrect, addAnswered } from "@/store/quizSlice";
+import {
+  setQuizIdx,
+  incrementCorrect,
+  addAnswered,
+  setAnswer,
+} from "@/store/quizSlice";
 import { RootState } from "@/store";
-import ThemeToggle from "@/components/theme";
-import LanguageSwitcher from "./languageSwitcher";
-import SignInButton from "@/app/[locale]/sign-in/sign-in-button";
+import dynamic from "next/dynamic";
+const SignInButton = dynamic(
+  () => import("@/app/[locale]/sign-in/sign-in-button"),
+  {
+    ssr: false,
+  }
+);
+const ThemeToggle = dynamic(() => import("@/components/theme"), { ssr: false });
+const LanguageSwitcher = dynamic(
+  () => import("@/components/data/languageSwitcher"),
+  { ssr: false }
+);
+import ProgressBar from "./ProgressBar";
+import QuizOptions from "./QuizOptions";
 
 interface PageData {
   id: number;
@@ -21,19 +37,34 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const answered = useSelector((state: RootState) => state.quiz.answered);
+  const userAnswer = useSelector(
+    (state: RootState) => state.quiz.answers?.[data.id]
+  );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!answered.includes(data.id)) {
-      if (selected === data.answer) {
-        dispatch(incrementCorrect());
-      }
-      dispatch(addAnswered(data.id));
+  useEffect(() => {
+    if (answered.includes(data.id)) {
+      setIsSubmitted(true);
+      if (userAnswer) setSelected(userAnswer);
     }
-    setIsSubmitted(true);
-  };
+  }, [answered, data.id, userAnswer]);
 
-  const goToNext = () => {
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (!answered.includes(data.id)) {
+        if (selected === data.answer) {
+          dispatch(incrementCorrect());
+        }
+        dispatch(addAnswered(data.id));
+        dispatch(setAnswer({ id: data.id, answer: selected! }));
+      }
+
+      setIsSubmitted(true);
+    },
+    [answered, data.id, data.answer, selected, dispatch]
+  );
+
+  const goToNext = useCallback(() => {
     const nextId = data.id + 1;
     if (nextId > size) {
       router.push("/result");
@@ -41,53 +72,25 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
       dispatch(setQuizIdx(nextId));
       router.push(`/data/${nextId}`);
     }
-  };
+  }, [data, size, router, dispatch]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-6 overflow-hidden">
       <div className="relative w-full max-w-xl bg-white/85 rounded-3xl shadow-2xl p-6 sm:p-8 md:p-10 text-[14px] sm:text-base">
-        <div className="absolute top-0 w-10/12 h-2 bg-gray-200 rounded-t-3xl overflow-hidden">
-          <div
-            className="h-full bg-blue-500 transition-all duration-500"
-            style={{ width: `${(data.id / size) * 100}%` }}
-          />
-        </div>
+        <ProgressBar current={data.id} total={size} />
 
         <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-800 mb-4 sm:mb-6 text-center animate-fade-in">
           {data.question}
         </h2>
 
         <form onSubmit={handleSubmit}>
-          <div className="space-y-3 sm:space-y-4">
-            {data.options.map((opt, index) => (
-              <label
-                key={index}
-                className={`flex items-center p-3 sm:p-4 border-2 rounded-xl transition cursor-pointer font-medium
-              ${
-                isSubmitted
-                  ? opt === data.answer
-                    ? "border-green-600 bg-green-50 text-green-800"
-                    : opt === selected
-                    ? "border-red-600 bg-red-50 text-red-800"
-                    : "border-gray-300 text-gray-800"
-                  : selected === opt
-                  ? "border-blue-600 bg-blue-50 text-blue-800 shadow-md"
-                  : "border-gray-300 hover:border-blue-500 hover:bg-blue-50 text-gray-800"
-              }`}
-              >
-                <input
-                  type="radio"
-                  name="option"
-                  value={opt}
-                  disabled={isSubmitted}
-                  checked={selected === opt}
-                  onChange={() => setSelected(opt)}
-                  className="form-radio accent-blue-600 mr-4 ml-2 scale-110"
-                />
-                {opt}
-              </label>
-            ))}
-          </div>
+          <QuizOptions
+            options={data.options}
+            selected={selected}
+            correct={data.answer}
+            isSubmitted={isSubmitted}
+            onSelect={setSelected}
+          />
 
           {!isSubmitted ? (
             <>
@@ -133,4 +136,4 @@ const QuizTable = ({ data, size }: { data: PageData; size: number }) => {
   );
 };
 
-export default QuizTable;
+export default memo(QuizTable);

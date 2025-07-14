@@ -1,15 +1,15 @@
 "use client";
-
-import QuizTable from "@/components/data/QuizTable";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { resetQuiz, setQuizIdx, setSize } from "@/store/quizSlice";
+
+import QuizTable from "@/components/data/QuizTable";
 import compQuiz from "@/quizes/compQuiz";
 import mathQuiz from "@/quizes/mathQuiz";
 import phyzQuiz from "@/quizes/phyzQuiz";
 import engQuiz from "@/quizes/engQuiz";
-import { resetQuiz, setSize } from "@/store/quizSlice";
 
 interface PageData {
   id: number;
@@ -19,34 +19,41 @@ interface PageData {
 }
 
 const Page = () => {
-  const router = useRouter();
   const { id } = useParams();
+  const router = useRouter();
   const dispatch = useDispatch();
+
   const quizType = useSelector((state: RootState) => state.quiz.type);
   const quizIdx = useSelector((state: RootState) => state.quiz.quizIdx);
+  const answered = useSelector((state: RootState) => state.quiz.answered);
+
   const [question, setQuestion] = useState<PageData | null>(null);
 
-  const quiz =
-    quizType === "compQuiz"
-      ? compQuiz
-      : quizType === "mathQuiz"
-      ? mathQuiz
-      : quizType === "phyzQuiz"
-      ? phyzQuiz
-      : engQuiz;
+  const quiz = useMemo(() => {
+    switch (quizType) {
+      case "compQuiz":
+        return compQuiz;
+      case "mathQuiz":
+        return mathQuiz;
+      case "phyzQuiz":
+        return phyzQuiz;
+      case "engQuiz":
+        return engQuiz;
+      default:
+        return [];
+    }
+  }, [quizType]);
+
+  const isStateReady = quizType !== null && quizIdx !== 0;
 
   useEffect(() => {
-    if (!quizType || !id) {
-      router.push("/");
-      return;
-    }
-
+    if (!isStateReady || !id) return;
     dispatch(setSize(quiz.length));
-
     const currentId = parseInt(id as string);
+
     if (
+      !quizType ||
       isNaN(currentId) ||
-      currentId !== quizIdx ||
       currentId < 1 ||
       currentId > quiz.length
     ) {
@@ -55,12 +62,28 @@ const Page = () => {
       return;
     }
 
-    setQuestion(quiz[currentId - 1]);
-  }, [id, quizType]);
+    if (answered.includes(currentId)) {
+      if (currentId !== quizIdx) {
+        router.push(`/data/${quizIdx}`);
+      } else {
+        setQuestion(quiz[currentId - 1]);
+      }
+      return;
+    }
 
-  return (
-    <div>{question && <QuizTable data={question} size={quiz.length} />}</div>
-  );
+    if (currentId !== quizIdx) {
+      dispatch(setQuizIdx(currentId));
+      return;
+    }
+
+    setQuestion(quiz[currentId - 1]);
+  }, [id, quizType, quiz, quizIdx, dispatch, router, answered, isStateReady]);
+
+  if (!isStateReady || !question) {
+    return <div className="text-center p-10">در حال بارگذاری...</div>;
+  }
+
+  return <QuizTable data={question} size={quiz.length} />;
 };
 
 export default Page;

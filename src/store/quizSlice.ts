@@ -5,6 +5,7 @@ interface QuizState {
   quizIdx: number;
   correct: number;
   answered: number[];
+  answers: Record<number, string>;
   size: number;
 }
 
@@ -13,6 +14,7 @@ const initialState: QuizState = {
   quizIdx: 1,
   correct: 0,
   answered: [],
+  answers: {},
   size: 0,
 };
 
@@ -34,6 +36,13 @@ const quizSlice = createSlice({
         state.answered.push(action.payload);
       }
     },
+    setAnswer: (
+      state,
+      action: PayloadAction<{ id: number; answer: string }>
+    ) => {
+      if (!state.answers) state.answers = {}; // ✅ احتیاطی
+      state.answers[action.payload.id] = action.payload.answer;
+    },
     resetQuiz: (state) => {
       state.quizIdx = 1;
       state.correct = 0;
@@ -50,6 +59,7 @@ export const {
   setQuizIdx,
   incrementCorrect,
   addAnswered,
+  setAnswer,
   resetQuiz,
   setSize,
 } = quizSlice.actions;

@@ -29,7 +29,7 @@ const Result = () => {
       setIsValid(false);
       router.push("/");
     }
-  }, [answered.length, TOTAL_QUESTIONS, status]);
+  }, [answered.length, TOTAL_QUESTIONS, status, router]);
 
   const handleTryAgain = () => {
     dispatch(resetQuiz());

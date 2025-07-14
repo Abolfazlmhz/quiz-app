@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor } from "@/store";
+import { persister } from "@/store";
 
 interface Props {
   children: ReactNode;
@@ -15,7 +15,7 @@ interface Props {
 export default function AppProviders({ children, session }: Props) {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={null} persistor={persister}>
         <SessionProvider session={session}>
           <ThemeProvider
             attribute="data-theme"
