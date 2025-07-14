@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import AppProviders from "./AppProvider";
+import AppProvider from "./AppProvider";
 import { routing } from "@/i18n/routing";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/components/auth/authOptions";
@@ -43,7 +43,7 @@ export default async function LocaleLayout({
         className={`${vazir.variable} antialiased h-screen text-center font-bold text-4xl`}
       >
         <NextIntlClientProvider>
-          <AppProviders session={session}>{children}</AppProviders>
+          <AppProvider session={session}>{children}</AppProvider>
         </NextIntlClientProvider>
       </body>
     </html>

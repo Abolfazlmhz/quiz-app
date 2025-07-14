@@ -12,7 +12,7 @@ interface Props {
   children: ReactNode;
   session: Session | null;
 }
-export default function AppProviders({ children, session }: Props) {
+export default function AppProvider({ children, session }: Props) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persister}>
