@@ -16,7 +16,6 @@
   },
   "ResultPage": {
     "title": "نتیجه آزمون",
-    "subtitle": "نتیجه آزمون شما به شرح زیر است:",
     "correct": "درست",
     "incorrect": "غلط",
     "percent": "درصد موفقیت",

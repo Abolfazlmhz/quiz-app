@@ -16,7 +16,6 @@
   },
   "ResultPage": {
     "title": "Quiz Result",
-    "subtitle": "Your quiz result is as follows:",
     "correct": "Correct",
     "incorrect": "Incorrect",
     "percent": "Percentage",

@@ -8,20 +8,29 @@ import { useTranslations } from "next-intl";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { resetQuiz } from "@/store/quizSlice";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const Result = () => {
   const router = useRouter();
   const { status } = useSession();
   const t = useTranslations("ResultPage");
-  const correct = useSelector((state: RootState) => state.quiz.correct) || 0;
-  const answered = useSelector((state: RootState) => state.quiz.answered) || [];
-  const TOTAL_QUESTIONS =
-    useSelector((state: RootState) => state.quiz.size) || 0;
+  const correct = useSelector((state: RootState) => state.quiz.correct ?? 0);
+  const answered = useSelector((state: RootState) => state.quiz.answered ?? []);
+  const TOTAL_QUESTIONS = useSelector(
+    (state: RootState) => state.quiz.size ?? 0
+  );
   const dispatch = useDispatch();
 
-  const incorrect = TOTAL_QUESTIONS - correct || 0;
-  const percent = Math.round((correct / TOTAL_QUESTIONS) * 100) || 0;
+  const incorrect = useMemo(
+    () => TOTAL_QUESTIONS - correct || 0,
+    [TOTAL_QUESTIONS, correct]
+  );
+  const percent = useMemo(() => {
+    return TOTAL_QUESTIONS > 0
+      ? Math.round((correct / TOTAL_QUESTIONS) * 100)
+      : 0;
+  }, [TOTAL_QUESTIONS, correct]);
+
   const [isValid, setIsValid] = useState(true);
 
   useEffect(() => {
@@ -31,21 +40,19 @@ const Result = () => {
     }
   }, [answered.length, TOTAL_QUESTIONS, status, router]);
 
-  const handleTryAgain = () => {
+  const handleTryAgain = useCallback(() => {
     dispatch(resetQuiz());
     router.push("/");
-  };
+  }, [dispatch, router]);
 
   if (!isValid) return null;
 
   return (
     <div className=" min-h-screen flex items-center justify-center px-4 py-4">
       <div className="bg-white/85 rounded-3xl shadow-2xl p-6 max-w-lg w-full text-center">
-        <h1 className="text-4xl font-extrabold text-blue-700 mb-2">
+        <h1 className="text-4xl font-extrabold text-blue-700 mb-5">
           {t("title")}
         </h1>
-        <p className="text-gray-600 mb-6">{t("subtitle")}</p>
-
         <p
           className={`text-xl font-bold mb-4 ${
             percent >= 70 ? "text-green-600" : "text-red-500"
