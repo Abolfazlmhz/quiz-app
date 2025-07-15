@@ -10,7 +10,7 @@ function areEqual(prevProps: unknown, nextProps: unknown) {
 function ThemeToggle() {
   const { setTheme, theme } = useTheme();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false); // ✨ جدید
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true); // وقتی کامپوننت mount شد، true میشه

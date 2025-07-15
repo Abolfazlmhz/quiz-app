@@ -1,8 +1,9 @@
 import { useRouter, usePathname } from "@/i18n/navigation";
 
 import { useLocale } from "next-intl";
+import { memo } from "react";
 
-export default function LanguageSwitcher() {
+function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
@@ -22,3 +23,5 @@ export default function LanguageSwitcher() {
     </div>
   );
 }
+
+export default memo(LanguageSwitcher);

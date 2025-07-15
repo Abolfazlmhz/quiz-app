@@ -3,13 +3,11 @@
 import { memo, useCallback, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-const ThemeToggle = dynamic(() => import("@/components/theme"), { ssr: false });
-const LanguageSwitcher = dynamic(
-  () => import("@/components/data/languageSwitcher"),
-  { ssr: false }
-);
+import LanguageSwitcher from "@/components/data/languageSwitcher";
+import ThemeToggle from "@/components/theme";
 import { useTranslations } from "next-intl";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "@/store/quizSlice";
 
 function SignInPage() {
   const [username, setUsername] = useState("");
@@ -18,6 +16,7 @@ function SignInPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const t = useTranslations("SignInPage");
+  const dispatch = useDispatch();
 
   const handleLogin = useCallback(async () => {
     setError("");
@@ -29,11 +28,12 @@ function SignInPage() {
     });
     setLoading(false);
     if (!res?.error) {
+      dispatch(setCurrentUser(username));
       router.push("/");
     } else {
       setError(t("invalidCredentials"));
     }
-  }, [username, password, router, t]);
+  }, [username, password, dispatch, router, t]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {

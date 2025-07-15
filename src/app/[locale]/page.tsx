@@ -10,6 +10,7 @@ const LanguageSwitcher = dynamic(
   () => import("@/components/data/languageSwitcher"),
   { ssr: false }
 );
+const ResultBtn = dynamic(() => import("./results/resultsBtn"), { ssr: false });
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 
@@ -67,6 +68,7 @@ export default function Home() {
       <SignInButton />
       <LanguageSwitcher />
       <ThemeToggle />
+      <ResultBtn />
     </div>
   );
 }

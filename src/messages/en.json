@@ -12,7 +12,7 @@
     "login": "Login",
     "loginWithGithub": "Login with GitHub",
     "invalidCredentials": "Invalid credentials",
-    "wait":"Please wait..."
+    "wait": "Please wait..."
   },
   "ResultPage": {
     "title": "Quiz Result",
@@ -34,5 +34,13 @@
     "mathQuiz": "Math Quiz",
     "phyzQuiz": "Physics Quiz",
     "engQuiz": "English Quiz"
+  },
+  "resultsHistory": {
+    "title": "Quiz Results History",
+    "quizLabel": "Quiz:",
+    "successRate": "Success Rate",
+    "correctOutOfTotal": "Correct out of Total",
+    "date": "Date",
+    "noResults": "No results have been recorded yet."
   }
 }

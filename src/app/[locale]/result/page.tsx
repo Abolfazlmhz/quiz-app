@@ -1,13 +1,13 @@
 "use client";
-import ThemeToggle from "@/components/theme";
 import LanguageSwitcher from "@/components/data/languageSwitcher";
-import { useRouter } from "next/navigation";
+import ThemeToggle from "@/components/theme";
 import SignInButton from "../sign-in/sign-in-button";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import { resetQuiz } from "@/store/quizSlice";
+import { resetQuiz, saveResult } from "@/store/quizSlice";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 const Result = () => {
@@ -38,9 +38,10 @@ const Result = () => {
       setIsValid(false);
       router.push("/");
     }
-  }, [answered.length, TOTAL_QUESTIONS, status, router]);
+  }, [answered.length, TOTAL_QUESTIONS, status, router, dispatch]);
 
   const handleTryAgain = useCallback(() => {
+    dispatch(saveResult());
     dispatch(resetQuiz());
     router.push("/");
   }, [dispatch, router]);

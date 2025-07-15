@@ -4,15 +4,9 @@ import { useDispatch } from "react-redux";
 import { resetQuiz, setQuizType } from "@/store/quizSlice";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import dynamic from "next/dynamic";
-const LanguageSwitcher = dynamic(
-  () => import("@/components/data/languageSwitcher"),
-  { ssr: false }
-);
-const ThemeToggle = dynamic(() => import("@/components/theme"), { ssr: false });
-const SignInButton = dynamic(() => import("../sign-in/sign-in-button"), {
-  ssr: false,
-});
+import LanguageSwitcher from "@/components/data/languageSwitcher";
+import ThemeToggle from "@/components/theme";
+import SignInButton from "../sign-in/sign-in-button";
 import { CodeIcon, BrainIcon, LanguagesIcon, AtomIcon } from "lucide-react";
 import { useCallback } from "react";
 import QuizCard from "./QuizCard";

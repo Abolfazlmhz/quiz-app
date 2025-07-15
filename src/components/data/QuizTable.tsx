@@ -9,18 +9,9 @@ import {
   setAnswer,
 } from "@/store/quizSlice";
 import { RootState } from "@/store";
-import dynamic from "next/dynamic";
-const SignInButton = dynamic(
-  () => import("@/app/[locale]/sign-in/sign-in-button"),
-  {
-    ssr: false,
-  }
-);
-const ThemeToggle = dynamic(() => import("@/components/theme"), { ssr: false });
-const LanguageSwitcher = dynamic(
-  () => import("@/components/data/languageSwitcher"),
-  { ssr: false }
-);
+import LanguageSwitcher from "@/components/data/languageSwitcher";
+import ThemeToggle from "@/components/theme";
+import SignInButton from "@/app/[locale]/sign-in/sign-in-button";
 import ProgressBar from "./ProgressBar";
 import QuizOptions from "./QuizOptions";
 
