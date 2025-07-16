@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { resetQuiz, saveResult } from "@/store/quizSlice";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const Result = () => {
   const router = useRouter();
@@ -16,6 +16,8 @@ const Result = () => {
   const t = useTranslations("ResultPage");
   const correct = useSelector((state: RootState) => state.quiz.correct ?? 0);
   const answered = useSelector((state: RootState) => state.quiz.answered ?? []);
+  const resultSaved = useRef(false);
+
   const TOTAL_QUESTIONS = useSelector(
     (state: RootState) => state.quiz.size ?? 0
   );
@@ -37,11 +39,13 @@ const Result = () => {
     if (answered.length !== TOTAL_QUESTIONS || status === "unauthenticated") {
       setIsValid(false);
       router.push("/");
+    } else if (!resultSaved.current) {
+      dispatch(saveResult());
+      resultSaved.current = true;
     }
   }, [answered.length, TOTAL_QUESTIONS, status, router, dispatch]);
 
   const handleTryAgain = useCallback(() => {
-    dispatch(saveResult());
     dispatch(resetQuiz());
     router.push("/");
   }, [dispatch, router]);

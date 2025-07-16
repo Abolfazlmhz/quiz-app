@@ -4,10 +4,7 @@ import { notFound, useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { setQuizIdx, setSize } from "@/store/quizSlice";
-// const Spinner = dynamic(() => import("@/components/data/Spinner"), {
-//   ssr: false,
-// });
-import SkeletonQuestion from "./Loading";
+import Loading from "./loading";
 import QuizTable from "@/components/data/QuizTable";
 import compQuiz from "@/quizes/compQuiz";
 import mathQuiz from "@/quizes/mathQuiz";
@@ -81,7 +78,7 @@ const Page = () => {
   }, [id, quizType, quiz, quizIdx, dispatch, router, answered, isStateReady]);
 
   if (!isStateReady || !question) {
-    return <SkeletonQuestion />;
+    return <Loading />;
   }
 
   return <QuizTable data={question} size={quiz.length} />;

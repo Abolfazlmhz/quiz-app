@@ -1,27 +1,34 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import dynamic from "next/dynamic";
-const SignInButton = dynamic(() => import("./sign-in/sign-in-button"), {
-  ssr: false,
-});
-const ThemeToggle = dynamic(() => import("@/components/theme"), { ssr: false });
-const LanguageSwitcher = dynamic(
-  () => import("@/components/data/languageSwitcher"),
-  { ssr: false }
-);
-const ResultBtn = dynamic(() => import("./results/resultsBtn"), { ssr: false });
+import LanguageSwitcher from "@/components/data/languageSwitcher";
+import ThemeToggle from "@/components/theme";
+import SignInButton from "@/app/[locale]/sign-in/sign-in-button";
+import ResultBtn from "./results/resultsBtn";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
+import { setCurrentUser } from "@/store/quizSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
+  const { status, data: session } = useSession();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const t = useTranslations("HomePage");
+  const currentUser = useSelector((state: RootState) => state.quiz.currentUser);
+
   useEffect(() => {
     setMounted(true);
   }, []);
-  const t = useTranslations("HomePage");
-  const router = useRouter();
-  const { status } = useSession();
+
+  useEffect(() => {
+    if (session?.user?.name && !currentUser) {
+      dispatch(setCurrentUser(session.user.name));
+    }
+  }, [session, currentUser, dispatch]);
+
   const handleStartQuiz = useCallback(() => {
     if (status === "unauthenticated") {
       router.push("/sign-in");

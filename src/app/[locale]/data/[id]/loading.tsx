@@ -1,4 +1,4 @@
-const SkeletonQuestion = () => {
+const Loading = () => {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-6">
       <div className="w-full max-w-xl bg-white/85 rounded-3xl shadow-2xl p-6 sm:p-8 md:p-10 animate-pulse space-y-6">
@@ -16,4 +16,4 @@ const SkeletonQuestion = () => {
   );
 };
 
-export default SkeletonQuestion;
+export default Loading;
