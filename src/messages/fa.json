@@ -12,7 +12,7 @@
     "login": "ورود",
     "loginWithGithub": "ورود با گیت‌هاب",
     "invalidCredentials": "نام کاربری یا رمز عبور اشتباه است",
-    "wait": "...در حال ورود"
+    "wait": "در حال ورود..."
   },
   "ResultPage": {
     "title": "نتیجه آزمون",
