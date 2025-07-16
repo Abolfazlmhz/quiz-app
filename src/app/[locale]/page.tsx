@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from "react";
 import { setCurrentUser } from "@/store/quizSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import InstallPrompt from "@/components/install/InstallPrompt";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -76,6 +77,7 @@ export default function Home() {
       <LanguageSwitcher />
       <ThemeToggle />
       <ResultBtn />
+      <InstallPrompt />
     </div>
   );
 }

@@ -42,5 +42,10 @@
     "correctOutOfTotal": "Correct out of Total",
     "date": "Date",
     "noResults": "No results have been recorded yet."
+  },
+  "install": {
+    "title": "You can install Quiz App!",
+    "close": "Close",
+    "install": "Install"
   }
 }
