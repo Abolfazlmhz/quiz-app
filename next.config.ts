@@ -1,11 +1,19 @@
-import { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import withPWA from "next-pwa";
+import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const withNextIntl = createNextIntlPlugin();
+
+const baseConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
 };
 
-const withNextIntl = createNextIntlPlugin();
-export default withNextIntl(nextConfig);
+const combinedConfig = withPWA({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+})(withNextIntl(baseConfig));
+
+export default combinedConfig;

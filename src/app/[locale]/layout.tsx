@@ -1,5 +1,4 @@
 import "./globals.css";
-import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -7,6 +6,7 @@ import AppProvider from "./AppProvider";
 import { routing } from "@/i18n/routing";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/components/auth/authOptions";
+import type { Metadata } from "next";
 
 const vazir = Vazirmatn({
   variable: "--font-vazir",
@@ -16,8 +16,24 @@ const vazir = Vazirmatn({
 });
 
 export const metadata: Metadata = {
-  title: "کوییز",
-  description: "آزمونکی کوتاه",
+  title: "Quiz App",
+  manifest: "/manifest.json",
+  icons: [
+    {
+      rel: "icon",
+      url: "/favicon.ico",
+    },
+    {
+      rel: "icon",
+      sizes: "192x192",
+      url: "/icons/icon1.png",
+    },
+    {
+      rel: "apple-touch-icon",
+      url: "/icons/apple-icon.png",
+    },
+  ],
+  themeColor: "#2563eb",
 };
 
 export default async function LocaleLayout({
