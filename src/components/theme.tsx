@@ -46,11 +46,11 @@ function ThemeToggle() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed top-4 left-4">
+    <div className="fixed top-1 left-0.5 sm:top-4 sm:left-4">
       <div className="relative inline-block text-left">
         <button
           onClick={() => setOpen(!open)}
-          className="p-2 rounded-full transition cursor-pointer"
+          className="rounded-full transition cursor-pointer"
         >
           {theme === "dark" ? "🌙" : theme === "blue" ? "🔵" : "🌞"}
         </button>
