@@ -20,7 +20,7 @@ function SignInButton() {
   if (status === "loading") return null;
 
   return (
-    <div className="fixed bottom-3 right-0 sm:bottom-4 sm:right-4 z-50">
+    <div className="fixed bottom-3 right-2 sm:bottom-4 sm:right-4 z-50">
       <button
         onClick={handleSignIn}
         className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base shadow-sm transition-all cursor-pointer"
