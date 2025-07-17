@@ -4,7 +4,7 @@ import { memo } from "react";
 
 const ResultBtn = () => {
   return (
-    <div className="fixed bottom-1 left-0.5 sm:bottom-4 sm:left-4 z-50 group">
+    <div className="fixed bottom-3 left-0 sm:bottom-4 sm:left-4 z-50 group">
       <Link href="/results" title="results">
         <div className="w-11 h-11 bg-green-600 hover:bg-green-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-105 relative">
           <FileUser className="w-7 h-7" />
