@@ -15,7 +15,8 @@ export const useQuizLogic = (
 ) => {
   const [selected, setSelected] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const time: number = 60;
+  const [timeLeft, setTimeLeft] = useState(time);
   const [timeExpired, setTimeExpired] = useState(false);
 
   const dispatch = useDispatch();
@@ -29,25 +30,36 @@ export const useQuizLogic = (
     if (answered.includes(data.id)) {
       setIsSubmitted(true);
       if (userAnswer) setSelected(userAnswer);
+      return;
     }
-  }, [answered, data.id, userAnswer]);
 
-  useEffect(() => {
-    if (isSubmitted) return;
+    const key = `quiz-start-${data.id}`;
+    let startTime: number;
 
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev === 1) {
-          clearInterval(timer);
-          setTimeExpired(true);
-          return 0;
-        }
-        return prev - 1;
-      });
+    const savedStart = localStorage.getItem(key);
+    if (savedStart) {
+      startTime = parseInt(savedStart);
+    } else {
+      startTime = Date.now();
+      localStorage.setItem(key, startTime.toString());
+    }
+
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const elapsed = Math.floor((now - startTime) / 1000);
+      const remaining = time - elapsed;
+
+      if (remaining <= 0) {
+        clearInterval(interval);
+        setTimeLeft(0);
+        setTimeExpired(true);
+      } else {
+        setTimeLeft(remaining);
+      }
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [isSubmitted]);
+    return () => clearInterval(interval);
+  }, [data.id, answered, userAnswer]);
 
   useEffect(() => {
     if (!timeExpired || isSubmitted) return;
@@ -55,6 +67,7 @@ export const useQuizLogic = (
     setIsSubmitted(true);
     dispatch(addAnswered(data.id));
     dispatch(setAnswer({ id: data.id, answer: selected ?? "" }));
+    localStorage.removeItem(`quiz-start-${data.id}`);
   }, [timeExpired, isSubmitted, dispatch, data.id, selected]);
 
   const handleSubmit = useCallback(
@@ -68,6 +81,7 @@ export const useQuizLogic = (
         dispatch(setAnswer({ id: data.id, answer: selected! }));
       }
       setIsSubmitted(true);
+      localStorage.removeItem(`quiz-start-${data.id}`);
     },
     [answered, data.id, data.answer, selected, dispatch]
   );

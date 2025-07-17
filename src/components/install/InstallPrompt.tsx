@@ -40,7 +40,7 @@ export default function InstallPrompt() {
   if (!showPrompt) return null;
 
   return (
-    <div className="fixed top-2 bg-cyan-600/90 text-white text-[1rem]  px-4 py-3 flex items-center gap-3 flex-col z-50 shadow-md rounded-2xl">
+    <div className="fixed bottom-2 bg-cyan-600/90 text-white text-[1rem]  px-4 py-4 flex items-center gap-3 flex-col z-50 shadow-md rounded-2xl">
       <span>{t("title")}</span>
       <div className="space-x-3.5">
         <button

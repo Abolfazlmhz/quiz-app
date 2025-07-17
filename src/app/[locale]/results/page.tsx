@@ -47,7 +47,7 @@ const Results = () => {
     );
   }
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 mt-6 max-w-4xl mx-auto">
       <h1
         className={`text-4xl font-extrabold text-center ${
           theme === "light" ? "text-blue-800" : "text-white"
